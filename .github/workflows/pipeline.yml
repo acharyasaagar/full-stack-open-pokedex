@@ -4,6 +4,7 @@ on:
   pull_request:
     branches:
       - master
+    types: [opened, reopened, closed]
 
 jobs:
   simple_deployment_pipeline:

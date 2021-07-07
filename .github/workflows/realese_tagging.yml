@@ -1,9 +1,11 @@
-name: Deployment pipeline
+name: Release tagging
 
 on:
   pull_request:
     branches:
       - master
+    types: [opened, reopened, closed]
+
 jobs:
   release_management:
     runs-on: ubuntu-20.04
