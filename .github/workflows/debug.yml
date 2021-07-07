@@ -1,0 +1,14 @@
+name: Debug Workflow to run anything on all push events
+
+on:
+  push:
+
+jobs:
+  debug:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Print github Context
+        env:
+          GITHUB_CONTEXT: ${{ toJSON(github) }}
+        run: |
+          echo $GITHUB_CONTEXT
