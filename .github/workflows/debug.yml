@@ -9,13 +9,6 @@ jobs:
     steps:
       - name: Print github Context
         env:
-          GITHUB_CONTEXT: ${{ toJSON(github) }}
+          MY_BOOLEAN: ${{ !contains(github.event.commits.*.message, '#skip')}}
         run: |
-          echo $GITHUB_CONTEXT
-      - name: Print commit messages
-        env:
-          COMMITS: ${{ toJSON(github.event.commits) }}
-          COMMIT_MESSAGE: ${{ toJSON(github.event.commits.*.message)}}
-          COMMIT_MESSAGE1: ${{ toJSON(github.event.commits[0].message)}}
-        run: |
-          echo $COMMITS; echo $COMMIT_MESSAGE; echo $COMMIT_MESSAGE1;
+          echo $MY_BOOLEAN
