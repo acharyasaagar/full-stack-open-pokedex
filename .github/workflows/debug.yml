@@ -8,8 +8,9 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Print github Context
-        # putting #check in the commit message should
+        # putting #check in the commit message should echo false
         env:
+          COMMIT_MESSAGE: ${{ toJSON(github.event.commits.*.message) }}
           MY_BOOLEAN: ${{ !contains(github.event.commits.*.message, '#check')}}
         run: |
-          echo $MY_BOOLEAN
+          echo $MY_BOOLEAN; echo $COMMIT_MESSAGE;
