@@ -14,8 +14,8 @@ jobs:
           echo $GITHUB_CONTEXT
       - name: Print commit messages
         env:
-          COMMITS: ${{ toJSON(github.commits) }}
-          COMMIT_MESSAGE: ${{ toJSON(github.commits.*.message)}}
-          COMMIT_MESSAGE1: ${{ toJSON(github.commits[0].message)}}
+          COMMITS: ${{ toJSON(github.event.commits) }}
+          COMMIT_MESSAGE: ${{ toJSON(github.event.commits.*.message)}}
+          COMMIT_MESSAGE1: ${{ toJSON(github.event.commits[0].message)}}
         run: |
           echo $COMMITS; echo $COMMIT_MESSAGE; echo $COMMIT_MESSAGE1;
