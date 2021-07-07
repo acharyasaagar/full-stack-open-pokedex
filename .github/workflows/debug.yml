@@ -2,6 +2,8 @@ name: Debug Workflow to run anything on all push events
 
 on:
   push:
+    branches:
+      - debug
 
 jobs:
   debug:
