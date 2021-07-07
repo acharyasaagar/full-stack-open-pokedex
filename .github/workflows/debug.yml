@@ -10,7 +10,8 @@ jobs:
       - name: Print github Context
         # putting #check in the commit message should echo false
         env:
-          COMMIT_MESSAGE: ${{ toJSON(github.event.commits.*.message) }}
-          MY_BOOLEAN: ${{ !contains(github.event.commits.*.message, '#check')}}
+          COMMIT_MESSAGE: ${{ toJSON(github.event.commits[0].message) }}
+          MY_BOOLEAN: ${{ contains(github.event.commits[0].message, '#check')}}
+          MY_BOOLEAN_WITH_NOT: ${{ !contains(github.event.commits[0].message, '#check')}}
         run: |
-          echo $MY_BOOLEAN; echo $COMMIT_MESSAGE;
+          echo $MY_BOOLEAN; echo $MY_BOOLEAN_WITH_NOT; echo $COMMIT_MESSAGE;
