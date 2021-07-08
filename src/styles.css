@@ -56,8 +56,8 @@ footer {
 
 .list-item-name {
   position: absolute;
-  color: #fff;
-  background-color: #845ec2;
+  color: #000;
+  background-color: #dfe22d;
   bottom: 0;
   width: 100%;
   text-align: center;
