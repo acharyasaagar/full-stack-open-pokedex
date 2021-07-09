@@ -19,6 +19,9 @@ jobs:
         with:
           node-version: '12'
       #------------------------------------------------------#
+      - name: Mimic failure
+        run: echo failing-command
+      #------------------------------------------------------#
       - name: Install node (npm) dependencies
         run: npm install
       #------------------------------------------------------#
