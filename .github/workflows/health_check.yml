@@ -1,9 +1,8 @@
 name: Health check
 
 on:
-  push:
-    branches:
-      - feature/scheduled-workflow
+  schedule:
+    - cron: '*/5 * * * *'
 jobs:
   health_check:
     runs-on: ubuntu-20.04
