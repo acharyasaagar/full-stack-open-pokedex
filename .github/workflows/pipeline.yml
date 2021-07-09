@@ -12,24 +12,32 @@ jobs:
   simple_deployment_pipeline:
     runs-on: ubuntu-20.04
     steps:
+      #------------------------------------------------------#
       - uses: actions/checkout@v2
+      #------------------------------------------------------#
       - uses: actions/setup-node@v2
         with:
           node-version: '12'
+      #------------------------------------------------------#
       - name: Install node (npm) dependencies
         run: npm install
+      #------------------------------------------------------#
       - name: Lint
         run: npm run eslint
+      #------------------------------------------------------#
       - name: Build
         run: npm run build
+      #------------------------------------------------------#
       - name: Test
         run: npm run test
+      #------------------------------------------------------#
       - name: e2e tests
         uses: cypress-io/github-action@v2
         with:
           command: npm run test:e2e
           start: npm run start-prod
           wait-on: http://localhost:5000
+      #------------------------------------------------------#
       - name: deploy
         if: ${{ github.event_name == 'push' && !contains(github.event.commits[0].message, '#skip') }}
         uses: akhileshns/heroku-deploy@v3.12.12
@@ -40,3 +48,29 @@ jobs:
           healthcheck: https://pokedox-fsopen.herokuapp.com/healthcheck
           checkstring: ok
           rollbackonhealthcheckfailed: true
+      #------------------------------------------------------#
+      - uses: 8398a7/action-slack@v3
+        with:
+          status: custom
+          author_name: ${{ github.actor }}
+          fields: workflow,job,commit,repo,ref,author,took
+          custom_payload: |
+            {
+              attachments: [{
+                color: '${{ job.status }}' === 'success' ? 'good' : '${{ job.status }}' === 'failure' ? 'danger' : 'warning',
+                text: `A new versions is deployed to https://pokedox-fsopen.herokuapp.com/ ${process.env.AS_COMMIT} by ${process.env.AS_AUTHOR} and build took ${process.env.AS_TOOK}`,
+              }]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
+          MATRIX_CONTEXT: ${{ toJson(matrix) }}
+        if: success()
+      #------------------------------------------------------#
+      - uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          author_name: ${{ github.actor }}
+          fields: all
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
+        if: failure()
